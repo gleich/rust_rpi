@@ -1,7 +1,14 @@
+use std::{thread, time};
+
 use rust_gpiozero::LED;
 
 fn main() {
-    let mut led = LED::new(17);
-    led.blink(1.0, 1.0);
-    led.wait();
+    println!("Started program");
+    let led = LED::new(17);
+    led.on();
+    println!("Turned LED on");
+    thread::sleep(time::Duration::from_secs(1));
+    led.off();
+    println!("Turned LED off");
+    led.close();
 }
