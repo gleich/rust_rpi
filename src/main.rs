@@ -1,14 +1,18 @@
 use std::{thread, time::Duration};
 
-use rppal::{gpio::Gpio, system::DeviceInfo};
+use log::info;
+use log::LevelFilter;
+use rppal::gpio::Gpio;
+use simplelog::{ColorChoice, Config, TermLogger, TerminalMode};
 
 fn main() {
-    println!(
-        "Blinking an LED on a {}.",
-        DeviceInfo::new()
-            .expect("Failed to get device info")
-            .model()
-    );
+    TermLogger::init(
+        LevelFilter::Trace,
+        Config::default(),
+        TerminalMode::Stdout,
+        ColorChoice::Auto,
+    )
+    .expect("Failed to configure logger");
 
     let mut pin = Gpio::new()
         .expect("Failed to create new pin")
@@ -18,6 +22,7 @@ fn main() {
 
     loop {
         pin.toggle();
-        thread::sleep(Duration::from_millis(500));
+        info!("Toggled LED");
+        thread::sleep(Duration::from_millis(200));
     }
 }
